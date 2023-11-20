@@ -11,6 +11,8 @@ a:hover {
   color: red !important;
 }
 
+/* Important */
+/* //it is showing dropdown menu while hovering on dropdown */
 .dropdown:hover .dropdown-menu {
   display: block;
   margin-top: 0;
