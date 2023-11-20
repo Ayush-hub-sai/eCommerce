@@ -5,9 +5,22 @@ import { CartComponent } from './pages/cart/cart.component';
 import { SalesComponent } from './pages/sales/sales.component';
 
 const routes: Routes = [
-  { path: 'product', component: HomeComponent },
-  { path: 'cart', component: CartComponent },
-  { path: 'sale', component: SalesComponent }
+  {
+    path: "",
+    component: HomeComponent
+  },
+  {
+    path: 'products',
+    component: HomeComponent
+  },
+  {
+    path: 'cart',
+    component: CartComponent
+  },
+  {
+    path: "sale",
+    component: SalesComponent
+  }
 ];
 
 @NgModule({
