@@ -17,6 +17,14 @@ export class ProductService {
     return this.http.get<any[]>(this.url + "GetAllProducts");
   }
 
+  getAllCategories(): Observable<any[]> {
+    return this.http.get<any[]>(this.url + "GetAllCategory");
+  }
+
+  getProductByCategoryId(catId: number): Observable<any[]> {
+    return this.http.get<any[]>(this.url + "GetAllProductsByCategoryId?id=" + catId);
+  }
+
   addToCart(obj: any): Observable<any> {
     return this.http.post<any>(this.url + "AddToCart", obj);
   }
@@ -24,7 +32,7 @@ export class ProductService {
   getCartItemsByCustId(custId: number): Observable<any[]> {
     return this.http.get<any[]>(this.url + "GetCartProductsByCustomerId?id=" + custId);
   }
-  
+
   removeCartItemById(cartId: number): Observable<any[]> {
     return this.http.get<any[]>(this.url + "DeleteProductFromCartById?id=" + cartId);
   }

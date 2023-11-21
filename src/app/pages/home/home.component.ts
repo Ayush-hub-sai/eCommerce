@@ -9,6 +9,8 @@ import { ProductService } from 'src/app/services/product.service';
 export class HomeComponent implements OnInit {
 
   productList: any[] = [];
+  categoryList: any[] = []
+  selectedCategory: number = 0;
   cartObj: any = {
     "CartId": 0,
     "CustId": 1,
@@ -20,7 +22,14 @@ export class HomeComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    this.loadCategories()
     this.loadAllProducts();
+  }
+
+  loadCategories() {
+    this.productService.getAllCategories().subscribe((response: any) => {
+      this.categoryList = response.data;
+    })
   }
 
   loadAllProducts() {
@@ -29,12 +38,17 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  getProductByCategoryId(categoryId: number) {
+    this.selectedCategory = categoryId
+    this.productService.getProductByCategoryId(categoryId).subscribe((result: any) => {
+      this.productList = result.data;
+    })
+  }
+
   addItemToCart(productId: number) {
     this.cartObj.ProductId = productId;
     this.productService.addToCart(this.cartObj).subscribe((result: any) => {
       if (result.result) {
-        console.log(":hii");
-
         alert("Product Added To Cart");
         this.productService.cartAddedSubject.next(true);
       }
