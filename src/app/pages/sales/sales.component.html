@@ -1,59 +1,96 @@
-<div class="row">
-    <div class="col-8">
-        <div class="CartContainer">
-            <div class="row">
-              <div class="col-12">
-                <h3>Cart Items</h3>
-              </div> 
+<div class="row mt-4">
+  <div class="col-6">
+    <div class="card">
+      <div class="card-header  bg-danger-subtle">
+        <div class="card-title">
+          <h4>Billing Address</h4>
+        </div>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="row">
+            <div class="col-6 mb-3">
+              <input type="text" name="DeliveryAddress1" class="form-control" placeholder="Enter Delivery Address"
+                [(ngModel)]="checkOutObj.DeliveryAddress1">
             </div>
-            <div class="row pt-1" *ngFor="let cart of cartProducts"> 
-              <div class="col-3">
-                <img class="img-fluid" style="height: 200px;" [src]="cart.productImageUrl" class="card-img-top">
-              </div>
-              <div class="col-3">
-                {{cart.productName}}
-              </div>
-              <div class="col-2">
-                {{cart.quantity + 1}}
-              </div>
-              <div class="col-2 text-end">
-               {{ cart.productPrice}}
-              </div>
-              <div class="col-2 text-end">
-                <button class="btn btn-sm btn-danger" (click)="RemoveItem(cart.cartId)">Remove</button>
-               </div>
+            <div class="col-6">
+              <input type="text" name="DeliveryCity" class="form-control" placeholder="Enter City"
+                [(ngModel)]="checkOutObj.DeliveryCity">
             </div>
-           
-            <div class="row">
-              <div class="col-3">
+            <div class="col-6 mb-3">
+              <input type="text" name="DeliveryPinCode" class="form-control" placeholder="Enter Pincode"
+                [(ngModel)]="checkOutObj.DeliveryPinCode">
+            </div>
+            <div class="col-6">
+              <input type="text" name="DeliveryLandMark" class="form-control" placeholder="Enter Landark"
+                [(ngModel)]="checkOutObj.DeliveryLandMark">
+            </div>
+            <div class="col-6">
+              <textarea name="" name="DeliveryAddress2" id="" cols="30" rows="4" class="form-control"
+                placeholder="Description" [(ngModel)]="checkOutObj.DeliveryAddress2">
+                Description
+              </textarea>
+            </div>
 
-              </div>
-              <div class="col-9">
-                <hr>
-              </div>
-            </div>
-           
-            <div class="row">
-              <div class="col-2">
-                 
-              </div>
-              <div class="col-2">
-                 
-              </div>
-              <div class="col-4">
-                <div class="Subtotal">Sub-Total</div>
-                <div> <small> 2 items</small></div>
-              </div>
-              <div class="col-4 text-end">
-                <strong> ${{subTotal}}</strong>
-              </div>
-            </div>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <button class="btn btn-lg btn-success" (click)="makeSale()"> Make Sale</button>
-                </div>
-            </div>
-             
           </div>
+        </form>
+      </div>
     </div>
+  </div>
+  <div class="col-6">
+    <div class="CartContainer">
+      <div class="row">
+        <div class="col-12">
+          <h3>Cart Items</h3>
+        </div>
+      </div>
+      <div class="row pt-1" *ngFor="let cart of cartProducts">
+        <div class="col-3">
+          <img class="img-fluid" style="height: 200px;" [src]="cart.productImageUrl" class="card-img-top">
+        </div>
+        <div class="col-3">
+          {{cart.productName}}
+        </div>
+        <div class="col-2">
+          {{cart.quantity + 1}}
+        </div>
+        <div class="col-2 text-end">
+          {{ cart.productPrice}}
+        </div>
+        <div class="col-2 text-end">
+          <button class="btn btn-sm btn-danger" (click)="RemoveItem(cart.cartId)">Remove</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3">
+
+        </div>
+        <div class="col-9">
+          <hr>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-2">
+
+        </div>
+        <div class="col-2">
+
+        </div>
+        <div class="col-4">
+          <div class="Subtotal">Sub-Total</div>
+          <div> <small> 2 items</small></div>
+        </div>
+        <div class="col-4 text-end">
+          <strong> ${{subTotal}}</strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center">
+          <button class="btn btn-lg btn-success" (click)="placeOrder()"> Make Sale</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -37,7 +37,12 @@ export class ProductService {
     return this.http.get<any[]>(this.url + "DeleteProductFromCartById?id=" + cartId);
   }
 
-  makeSale(obj: any): Observable<any> {
-    return this.http.post<any>(this.url + "AddNewSale", obj);
+  // makeSale(obj: any): Observable<any> {
+  //   return this.http.post<any>(this.url + "AddNewSale", obj);
+  // }
+  placeOrder(obj: any): Observable<any> {
+    return this.http.post<any>(this.url + "PlaceOrder", obj);
   }
+
+
 }

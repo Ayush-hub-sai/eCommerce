@@ -13,14 +13,23 @@ export class HomeComponent implements OnInit {
   selectedCategory: number = 0;
   cartObj: any = {
     "CartId": 0,
-    "CustId": 1,
+    "CustId": 0,
     "ProductId": 0,
     "Quantity": 0,
-    "AddedDate": "2023-04-27T07:12:40.926Z"
+    "AddedDate": new Date()
   };
+  loggedUserData: any
+
+
   constructor(private productService: ProductService) {
+    const localData = localStorage.getItem('loggedData')
+    if (localData != null) {
+      const parseObj = JSON.parse(localData)
+      this.loggedUserData = parseObj
+    }
 
   }
+
   ngOnInit(): void {
     this.loadCategories()
     this.loadAllProducts();
@@ -46,8 +55,15 @@ export class HomeComponent implements OnInit {
   }
 
   addItemToCart(productId: number) {
-    this.cartObj.ProductId = productId;
-    this.productService.addToCart(this.cartObj).subscribe((result: any) => {
+    const Obj: any = {
+      "CartId": 0,
+      "CustId": this.loggedUserData.custId,
+      "ProductId": productId,
+      "Quantity": 1,
+      "AddedDate": new Date()
+    };
+
+    this.productService.addToCart(Obj).subscribe((result: any) => {
       if (result.result) {
         alert("Product Added To Cart");
         this.productService.cartAddedSubject.next(true);

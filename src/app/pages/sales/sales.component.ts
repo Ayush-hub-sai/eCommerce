@@ -9,30 +9,37 @@ import { ProductService } from 'src/app/services/product.service';
 export class SalesComponent implements OnInit {
   cartProducts: any[] = [];
   subTotal: number = 0;
-  saleObj: any = {
+  loggedUserData: any
+
+  checkOutObj: any = {
     "SaleId": 0,
-    "CustId": 1,
+    "CustId": 0,
     "SaleDate": new Date(),
     "TotalInvoiceAmount": 0,
     "Discount": 0,
     "PaymentNaration": "Patmm ",
-    "DeliveryAddress1": "Plot nio 122",
+    "DeliveryAddress1": "",
     "DeliveryAddress2": "Ner ATM",
-    "DeliveryCity": "Pune",
-    "DeliveryPinCode": "440033",
-    "DeliveryLandMark": "ATM"
+    "DeliveryCity": "",
+    "DeliveryPinCode": "",
+    "DeliveryLandMark": ""
   };
 
   constructor(private productService: ProductService) {
+    const localData = localStorage.getItem('loggedData')
+    if (localData != null) {
+      const parseObj = JSON.parse(localData)
+      this.loggedUserData = parseObj
+    }
   }
 
   ngOnInit(): void {
-    this.loadCart();
+    this.loadCart(this.loggedUserData.custId);
   }
 
-  loadCart() {
+  loadCart(custId: any) {
     this.subTotal = 0;
-    this.productService.getCartItemsByCustId(1).subscribe((res: any) => {
+    this.productService.getCartItemsByCustId(custId).subscribe((res: any) => {
       this.cartProducts = res.data;
       this.cartProducts.forEach(element => {
         this.subTotal = this.subTotal + element.productPrice;
@@ -43,22 +50,25 @@ export class SalesComponent implements OnInit {
   RemoveItem(id: number) {
     this.productService.removeCartItemById(id).subscribe((res: any) => {
       if (res.result) {
-        this.loadCart();
+        this.loadCart(this.loggedUserData.custId);
         this.productService.cartAddedSubject.next(true);
       }
     })
   }
 
-  makeSale() {
-    this.saleObj.TotalInvoiceAmount = this.subTotal;
+  placeOrder() {
+    this.checkOutObj.TotalInvoiceAmount = this.subTotal;
     this.productService.cartAddedSubject.next(true);
-    this.productService.makeSale(this.saleObj).subscribe((res: any) => {
+    this.checkOutObj.CustId = this.loggedUserData.custId
+    console.log(this.checkOutObj);
+
+    this.productService.placeOrder(this.checkOutObj).subscribe((res: any) => {
       if (res.result) {
-        alert("Sale Success")
-        this.loadCart();
+        alert(res.message)
+        this.loadCart(this.loggedUserData.custId);
         this.productService.cartAddedSubject.next(true);
       }
     })
   }
-  
+
 }

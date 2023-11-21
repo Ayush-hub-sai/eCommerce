@@ -25,20 +25,7 @@
               <li><a class="dropdown-item" href="#">Option</a></li>
             </ul>
           </li>
-          <!-- 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle fw-semibold text-uppercase text-black  me-1" href="#" id="navbarDropdown"
-              role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              shop
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Option</a></li>
-              <li><a class="dropdown-item" href="#">Option</a></li>
 
-              <li><a class="dropdown-item" href="#">Option</a></li>
-            </ul>
-          </li>
-         -->
           <li class="nav-item">
             <a class="nav-link fw-semibold text-uppercase text-black  me-1" href="#">Contact us</a>
           </li>
@@ -63,22 +50,33 @@
                     Remove All
                   </div>
                 </div>
-                <div class="row pt-1" *ngFor="let cart of cartProducts">
-                  <div class="col-4">
-                    <img class="img-fluid" style="height: 30px;border-radius: 50%;" [src]="cart.productImageUrl"
-                      class="card-img-top">
-                  </div>
-                  <div class="col-3">
-                    {{cart.productName}}
-                  </div>
-                  <div class="col-2">
-                    {{cart.quantity + 1}}
-                  </div>
-                  <div class="col-2 text-end">
-                    {{ cart.productPrice}}
-                  </div>
-                </div>
 
+                <ng-container *ngIf="cartProducts.length!=0">
+                  <div class="row pt-1" *ngFor="let cart of cartProducts">
+                    <div class="col-4">
+                      <img class="img-fluid" style="height: 30px;border-radius: 50%;" [src]="cart.productImageUrl"
+                        class="card-img-top">
+                    </div>
+                    <div class="col-3">
+                      {{cart.productName}}
+                    </div>
+                    <div class="col-2">
+                      {{cart.quantity + 1}}
+                    </div>
+                    <div class="col-2 text-end">
+                      {{ cart.productPrice}}
+                    </div>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="cartProducts.length==0">
+                  <div class="row">
+                    <div class="text-center">
+                      <h4>Cart is Empty</h4>
+                    </div>
+                  </div>
+                </ng-container>
+                
                 <div class="row">
                   <div class="col-3">
 
@@ -116,14 +114,19 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle user fw-semibold text-uppercase text-black  me-1" href="#"
               id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa fa-user  fs-5" style="color: #202122;"></i>
+              <i class="fa fa-user fs-5" style="color: #202122;"></i>
             </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign Up</a>
-              </li>
+
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown" *ngIf="!loggedUserData">
+              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign Up</a></li>
               <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></li>
             </ul>
+
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown" *ngIf="loggedUserData">
+              <li><a class="dropdown-item">{{ loggedUserData.name }}</a></li>
+            </ul>
           </li>
+
 
         </ul>
       </div>
@@ -145,32 +148,22 @@
         <form>
 
           <div class="mb-3">
-            <label for="fullName" class="form-label">Full Name</label>
-            <input type="text" class="form-control" name="fullName">
+            <label for="userName" class="form-label">User Name</label>
+            <input type="text" class="form-control" name="userName" [(ngModel)]="userRegObj.Name">
           </div>
 
           <div class="mb-3">
-            <label for="userName" class="form-label">User Name</label>
-            <input type="text" class="form-control" name="userName">
+            <label for="mobile" class="form-label">Mobile Number</label>
+            <input type="text" class="form-control" name="mobile" id="mobile" [(ngModel)]="userRegObj.MobileNo">
           </div>
 
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" name="password">
-          </div>
-
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" name="email">
-          </div>
-
-          <div class="mb-3">
-            <label for="dob" class="form-label">Date of Birth</label>
-            <input type="date" class="form-control" id="dob" name="dob">
+            <input type="password" class="form-control" name="password" [(ngModel)]="userRegObj.Password">
           </div>
 
           <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary btn-md">Sign Up</button>
+            <button type="submit" class="btn btn-primary btn-md" (click)="onRegister()">Sign Up</button>
             <p>Already a Customer? <a href="">Sign In</a></p>
           </div>
         </form>
@@ -191,13 +184,14 @@
       <div class="modal-body">
         <form>
           <div class="mb-3">
-            <label for="loguserName" class="form-label">User Name</label>
-            <input type="text" class="form-control" name="loguserName" id="loguserName">
+            <label for="UserName" class="form-label">User Name</label>
+            <input type="text" class="form-control" name="UserName" id="UserName" [(ngModel)]="userLogObj.UserName">
           </div>
 
           <div class="mb-3">
-            <label for="logpassword" class="form-label">Password</label>
-            <input type="password" class="form-control" name="logpassword" id="logpassword">
+            <label for="UserPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" name="UserPassword" id="UserPassword"
+              [(ngModel)]="userLogObj.UserPassword">
           </div>
 
           <div class="mb-3 form-check">
@@ -206,7 +200,7 @@
           </div>
 
           <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary btn-md">Sign In</button>
+            <button type="button" class="btn btn-primary btn-md" (click)="onLogin()">Sign In</button>
             <p>Not a member? <a href="">Sign Up</a></p>
           </div>
 
